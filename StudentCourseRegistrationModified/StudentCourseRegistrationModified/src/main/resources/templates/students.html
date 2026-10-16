@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Students | CampusConnect</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><div th:replace="~{fragments :: nav}"></div><main class="container page">
+<p class="eyebrow">CAMPUS DIRECTORY</p><h1 class="page-title">Students</h1><p class="sub">Add student details and maintain your campus directory.</p>
+<p class="notice success" th:if="${success}" th:text="${success}"></p><p class="notice error" th:if="${duplicateEmail}" th:text="${duplicateEmail}"></p>
+<div class="content-grid"><section class="panel"><h2>Add a student</h2><form th:action="@{/students}" th:object="${student}" method="post" class="form">
+<label>Full name<input type="text" th:field="*{name}" placeholder="e.g. Balaji Kumar" required></label><small class="error" th:errors="*{name}"></small>
+<label>Email address<input type="email" th:field="*{email}" placeholder="student@example.com" required></label><small class="error" th:errors="*{email}"></small>
+<label>Department<input type="text" th:field="*{department}" placeholder="e.g. Computer Science" required></label><small class="error" th:errors="*{department}"></small>
+<button class="primary" type="submit">Save student</button></form></section>
+<section class="panel table-panel"><div class="panel-heading"><h2>Student directory</h2><span class="count" th:text="${#lists.size(students)} + ' total'">0 total</span></div>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Department</th><th>Action</th></tr></thead><tbody><tr th:each="s : ${students}"><td th:text="${s.id}"></td><td class="strong" th:text="${s.name}"></td><td th:text="${s.email}"></td><td th:text="${s.department}"></td><td><form th:action="@{/students/{id}/delete(id=${s.id})}" method="post" onsubmit="return confirm('Delete this student? Registrations linked to the student may prevent deletion.');"><button class="text-button danger-text" type="submit">Delete</button></form></td></tr><tr th:if="${#lists.isEmpty(students)}"><td colspan="5" class="empty">No students yet. Add the first student using the form.</td></tr></tbody></table></div></section></div><footer>CampusConnect · Student Course Registration System</footer></main></body></html>

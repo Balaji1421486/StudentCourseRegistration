@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Courses | CampusConnect</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><div th:replace="~{fragments :: nav}"></div><main class="container page">
+<p class="eyebrow">LEARNING CATALOG</p><h1 class="page-title">Courses</h1><p class="sub">Create course offerings and keep instructor information organized.</p>
+<p class="notice success" th:if="${success}" th:text="${success}"></p><p class="notice error" th:if="${error}" th:text="${error}"></p>
+<div class="content-grid"><section class="panel"><h2>Add a course</h2><form th:action="@{/courses}" th:object="${course}" method="post" class="form">
+<label>Course name<input type="text" th:field="*{name}" placeholder="e.g. Java Full Stack" required></label><small class="error" th:errors="*{name}"></small>
+<label>Instructor<input type="text" th:field="*{instructor}" placeholder="e.g. Priya Sharma" required></label><small class="error" th:errors="*{instructor}"></small>
+<label>Credits<input type="number" min="1" th:field="*{credits}" required></label><small class="error" th:errors="*{credits}"></small>
+<button class="primary" type="submit">Save course</button></form></section>
+<section class="panel table-panel"><div class="panel-heading"><h2>Course catalog</h2><span class="count" th:text="${#lists.size(courses)} + ' total'">0 total</span></div><div class="table-wrap"><table><thead><tr><th>ID</th><th>Course</th><th>Instructor</th><th>Credits</th><th>Action</th></tr></thead><tbody><tr th:each="c : ${courses}"><td th:text="${c.id}"></td><td class="strong" th:text="${c.name}"></td><td th:text="${c.instructor}"></td><td th:text="${c.credits}"></td><td><form th:action="@{/courses/{id}/delete(id=${c.id})}" method="post"><button class="text-button danger-text" type="submit">Delete</button></form></td></tr><tr th:if="${#lists.isEmpty(courses)}"><td colspan="5" class="empty">No courses yet. Add the first course using the form.</td></tr></tbody></table></div></section></div><footer>CampusConnect · Student Course Registration System</footer></main></body></html>
